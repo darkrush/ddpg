@@ -3,7 +3,7 @@ import time
 from collections import deque
 import pickle
 
-from baselines.ddpg.ddpg import DDPG
+from ddpg import DDPG
 import baselines.common.tf_util as U
 
 from baselines import logger
@@ -43,7 +43,16 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
         # Prepare everything.
         agent.initialize(sess)
         sess.graph.finalize()
-
+        
+        agent_dict = agent.__dict__.items()
+        for item in agent_dict:
+            print(item)
+        
+        writer = tf.summary.FileWriter("log/",sess.graph)
+    writer.close()    
+    '''    
+        
+        
         agent.reset()
         obs = env.reset()
         if eval_env is not None:
@@ -189,3 +198,4 @@ def train(env, nb_epochs, nb_epoch_cycles, render_eval, reward_scale, render, pa
                 if eval_env and hasattr(eval_env, 'get_state'):
                     with open(os.path.join(logdir, 'eval_env_state.pkl'), 'wb') as f:
                         pickle.dump(eval_env.get_state(), f)
+    '''
